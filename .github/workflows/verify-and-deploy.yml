@@ -3,9 +3,8 @@ on:
   push:
     branches:
       - main
-  pull_request:
 permissions:
-  contents: read
+  contents: write
   pages: write
 jobs:
   verify:
@@ -25,4 +24,4 @@ jobs:
           cp -a .verify-helper/markdown/. .
           git add -A
           git commit -m "deploy docs (run ${GITHUB_RUN_ID})"
-          git push -u origin gh-pages
+          git push -u origin gh-pages --force
