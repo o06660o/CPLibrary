@@ -4,27 +4,23 @@ using namespace std;
 using ll = long long;
 
 #include "../../src/ds/ft.hpp"
+#include "../../src/misc/read.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
-  int n, q;
-  cin >> n >> q;
+  int n = read(), q = read();
   FenwickTree<ll> fw(n);
   for (int i = 0; i < n; i++) {
-    int a;
-    cin >> a;
+    int a = read();
     fw.add(i, a);
   }
   while (q--) {
-    int op;
-    cin >> op;
+    int op = read();
     if (op == 0) {
-      int p, x;
-      cin >> p >> x;
+      int p = read(), x = read();
       fw.add(p, x);
     } else if (op == 1) {
-      int l, r;
-      cin >> l >> r;
+      int l = read(), r = read();
       cout << fw.sum(l, r) << "\n";
     }
   }

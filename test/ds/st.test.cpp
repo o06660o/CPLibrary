@@ -1,21 +1,21 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/staticrmq
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
 #include "../../src/ds/st.hpp"
+#include "../../src/misc/read.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
-  int n, q;
-  cin >> n >> q;
+  int n = read(), q = read();
   vector<int> a(n);
   for (auto& x : a) {
-    cin >> x;
+    x = read();
   }
   SparseTable st(a, [](int lhs, int rhs) { return min(lhs, rhs); });
   while (q--) {
-    int l, r;
-    cin >> l >> r;
+    int l = read(), r = read();
     cout << st.query(l, r) << "\n";
   }
   return 0;

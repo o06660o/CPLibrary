@@ -4,22 +4,19 @@ using namespace std;
 using ll = long long;
 
 #include "../../src/misc/inthash.hpp"
+#include "../../src/misc/read.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
-  int q;
-  cin >> q;
+  int q = read();
   unordered_map<ll, ll, IntHash> mp;
   while (q--) {
-    int op;
-    cin >> op;
+    int op = read();
     if (op == 0) {
-      ll k, v;
-      cin >> k >> v;
+      ll k = read(), v = read();
       mp[k] = v;
     } else if (op == 1) {
-      ll k;
-      cin >> k;
+      ll k = read();
       cout << mp[k] << "\n";
     }
   }

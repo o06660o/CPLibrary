@@ -5,17 +5,17 @@ using ll = long long;
 using i128 = __int128_t;
 
 #include "../../src/misc/i128out.hpp"
+#include "../../src/misc/read.hpp"
 
 void solve() {
-  ll a, b;
+  ll a = read(), b = read();
   cin >> a >> b;
   cout << i128(a + b) << "\n";
 }
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
-  int tt;
-  cin >> tt;
+  int tt = read();
   while (tt--) {
     solve();
   }
