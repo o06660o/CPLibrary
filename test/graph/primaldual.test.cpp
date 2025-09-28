@@ -1,5 +1,4 @@
-#define PROBLEM \
-  "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_6_B"
+// competitive-verifier: PROBLEM https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_6_B
 #include <bits/stdc++.h>
 #define PUSHB push_back
 #define ALL(a) (a).begin(), (a).end()

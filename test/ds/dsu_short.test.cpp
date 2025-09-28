@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/unionfind"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/unionfind
 #include <bits/stdc++.h>
 #define ALL(a) (a).begin(), (a).end()
 using namespace std;

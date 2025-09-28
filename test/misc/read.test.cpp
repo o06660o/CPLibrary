@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/many_aplusb"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/many_aplusb
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
