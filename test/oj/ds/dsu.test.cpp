@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#include "../../src/ds/dsu.inc"
+#include "ds/dsu.inc"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);

@@ -15,12 +15,12 @@ struct PrimalDual {
     G[u].PUSHB(E.size()), E.PUSHB({u, v, cap, cost, 0});
     G[v].PUSHB(E.size()), E.PUSHB({v, u, 0, -cost, 0});
   }
-  pair<T, T> flow(int s_, int t_) {
+  pair<T, T> flow(int s_, int t_, T maxf = INF) {
     s = s_, t = t_;
     bellman_ford();
     T maxflow = 0, mincost = 0;
-    while (dijkstra()) {
-      T aug = INF;
+    while (maxflow < maxf && dijkstra()) {
+      T aug = maxf - maxflow;
       for (int i = 0; i < n; i++)
         if (dist[i] != INF) h[i] += dist[i];
       for (int p = t; p != s; p = E[prev[p] ^ 1].v)
