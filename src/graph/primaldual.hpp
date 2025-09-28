@@ -1,6 +1,4 @@
-/**
- *  时间复杂度: $\mathcal{O}(mf \log n)$, 随机数据表现良好.
- */
+// 时间复杂度: $\mathcal{O}(mf \log n)$.
 template <typename T>
 struct PrimalDual {
   struct Edge {

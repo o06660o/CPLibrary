@@ -6,7 +6,7 @@
 using namespace std;
 using ll = long long;
 
-#include "graph/primaldual.inc"
+#include "../../../src/graph/primaldual.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);

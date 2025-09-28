@@ -3,7 +3,7 @@
 using namespace std;
 using ll = long long;
 
-#include "ds/ft.inc"
+#include "../../../src/ds/ft.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);

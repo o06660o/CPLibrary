@@ -3,7 +3,7 @@
 #define ALL(a) (a).begin(), (a).end()
 using namespace std;
 
-#include "ds/dsu_short.inc"
+#include "../../../src/ds/dsu_short.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);

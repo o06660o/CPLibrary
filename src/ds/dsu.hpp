@@ -1,6 +1,4 @@
-/**
- *  `fasiz[i]` 非负时表示 `i` 的父节点, 否则表示 `i` 所在集合的大小的负值.
- */
+// `fasiz[i]` 非负时表示 `i` 的父节点, 否则表示 `i` 所在集合的大小的负值.
 struct DSU {
   vector<int> fasiz;
   DSU(int n) : fasiz(n, -1) {}

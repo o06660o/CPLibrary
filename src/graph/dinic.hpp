@@ -1,7 +1,4 @@
-/**
- *  时间复杂度: 一般图 $\mathcal{O}(n^2 m)$, 二分图匹配
- *    $\mathcal{O}(m \sqrt{n}})$, 随机数据表现良好.
- */
+// 时间复杂度: 一般图 $\mathcal{O}(n^2 m)$, 二分图匹配 $\mathcal{O}(m \sqrt{n}})$.
 template <typename T>
 struct Dinic {
   struct Edge {
