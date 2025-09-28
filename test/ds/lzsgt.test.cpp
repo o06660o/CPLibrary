@@ -19,7 +19,7 @@ struct Node2 {
 };
 struct Tag2 {
   mint b, c;
-  Tag2() : b(0), c(0) {}
+  Tag2() : b(1), c(0) {}
   Tag2(mint b, mint c) : b(b), c(c) {}
   friend Tag2 operator+(const Tag2& lhs, const Tag2& rhs) {
     return {lhs.b * rhs.b, lhs.c * rhs.b + rhs.c};
