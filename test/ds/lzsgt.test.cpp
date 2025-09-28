@@ -8,38 +8,32 @@ using ull = unsigned long long;
 #include "../../src/math/modint.hpp"
 #include "../../src/misc/read.hpp"
 
-struct Node2 {
-  mint sum;
-  int len;
-  Node2() : sum(0), len(0) {}
-  Node2(mint sum, int len) : sum(sum), len(len) {}
-  friend Node2 operator+(const Node2& lhs, const Node2& rhs) {
+struct Node_ {
+  mint sum = 0;
+  int len = 0;
+  friend Node_ operator+(const Node_& lhs, const Node_& rhs) {
     return {lhs.sum + rhs.sum, lhs.len + rhs.len};
   }
 };
-struct Tag2 {
-  mint b, c;
-  Tag2() : b(1), c(0) {}
-  Tag2(mint b, mint c) : b(b), c(c) {}
-  friend Tag2 operator+(const Tag2& lhs, const Tag2& rhs) {
-    return {lhs.b * rhs.b, lhs.c * rhs.b + rhs.c};
+struct Tag_ {
+  mint b = 1, c = 0;
+  Tag_ operator+=(const Tag_& rhs) {
+    b *= rhs.b;
+    c = c * rhs.b + rhs.c;
+    return *this;
   }
 };
-Node2 fn2(const Tag2& f, const Node2& x) {
-  Node2 ret = x;
-  ret.sum = ret.sum * f.b + f.c * ret.len;
-  return ret;
-}
+void fn_(const Tag_& f, Node_& x) { x.sum = x.sum * f.b + f.c * x.len; }
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
   int n = read(), q = read();
-  vector<Node2> a(n);
+  vector<Node_> a(n);
   for (auto& [sum, len] : a) {
     sum.data = read();
     len = 1;
   }
-  SegTree<Node2, Tag2, fn2> sgt(a);
+  SegTree<Node_, Tag_, fn_> sgt(a);
   while (q--) {
     int op = read(), l = read(), r = read();
     if (op == 0) {

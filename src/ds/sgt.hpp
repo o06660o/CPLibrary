@@ -29,9 +29,7 @@ struct SegTree {
   }
 };
 struct Node {
-  int data;
-  Node() : data(2e9) {}
-  Node(int data) : data(data) {}
+  int data = 2e9;
   friend Node operator+(const Node& lhs, const Node& rhs) {
     return {min(lhs.data, rhs.data)};
   }

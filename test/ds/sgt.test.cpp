@@ -11,7 +11,7 @@ int main() {
   int n = read(), q = read();
   vector<Node> a(n);
   for (auto& x : a) {
-    x = read();
+    x.data = read();
   }
   SegTree sgt(a);
   while (q--) {

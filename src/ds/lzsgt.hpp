@@ -1,4 +1,4 @@
-template <typename Node, typename Tag, Node (*fn)(const Tag&, const Node&)>
+template <typename Node, typename Tag, void (*fn)(const Tag&, Node&)>
 struct SegTree {
   SegTree(int n) : n(n), tags(4 * n), tree(4 * n) {}
   SegTree(const vector<Node>& a) : SegTree(a.size()) { build(1, 0, n, a); }
@@ -10,10 +10,7 @@ struct SegTree {
   Tag _f;
   vector<Tag> tags;
   vector<Node> tree;
-  void update(int p, const Tag& f) {
-    tree[p] = fn(f, tree[p]);
-    tags[p] = tags[p] + f;
-  }
+  void update(int p, const Tag& f) { fn(f, tree[p]), tags[p] += f; }
   void pushdown(int p) {
     int ls = p * 2, rs = p * 2 + 1;
     update(ls, tags[p]), update(rs, tags[p]);
@@ -40,24 +37,14 @@ struct SegTree {
   }
 };
 struct Node {
-  ll sum;
-  int len;
-  Node() : sum(0), len(0) {}
-  Node(ll sum, int len) : sum(sum), len(len) {}
+  ll sum = 0;
+  int len = 0;
   friend Node operator+(const Node& lhs, const Node& rhs) {
     return {lhs.sum + rhs.sum, lhs.len + rhs.len};
   }
 };
 struct Tag {
-  ll add;
-  Tag() : add(0) {}
-  Tag(ll add) : add(add) {}
-  friend Tag operator+(const Tag& lhs, const Tag& rhs) {
-    return {lhs.add + rhs.add};
-  }
+  ll add = 0;
+  Tag operator+=(const Tag& rhs) { return add += rhs.add, *this; }
 };
-Node fn(const Tag& f, const Node& x) {
-  Node ret = x;
-  ret.sum += x.len * f.add;
-  return ret;
-}
+void fn(const Tag& f, Node& x) { x.sum += x.len * f.add; }
