@@ -3,26 +3,18 @@ struct ModInt {
   unsigned data;
   ModInt(ll v = 0) : data(norm(v % MOD)) {}
   ModInt operator-() const { return MOD - data; }
-  ModInt& operator+=(const ModInt& rhs) {
-    data = norm(data + rhs.data);
-    return *this;
+  ModInt& operator+=(ModInt rhs) { return data = norm(data + rhs.data), *this; }
+  ModInt& operator-=(ModInt rhs) { return data = norm(data - rhs.data), *this; }
+  ModInt& operator*=(ModInt rhs) {
+    return data = ull(data) * rhs.data % MOD, *this;
   }
-  ModInt& operator-=(const ModInt& rhs) {
-    data = norm(data - rhs.data);
-    return *this;
+  ModInt& operator/=(ModInt rhs) {
+    return data = ull(data) * rhs.inv() % MOD, *this;
   }
-  ModInt& operator*=(const ModInt& rhs) {
-    data = ull(data) * rhs.data % MOD;
-    return *this;
-  }
-  ModInt& operator/=(const ModInt& rhs) {
-    data = ull(data) * rhs.inv() % MOD;
-    return *this;
-  }
-  friend ModInt operator+(ModInt lhs, const ModInt& rhs) { return lhs += rhs; }
-  friend ModInt operator-(ModInt lhs, const ModInt& rhs) { return lhs -= rhs; }
-  friend ModInt operator*(ModInt lhs, const ModInt& rhs) { return lhs *= rhs; }
-  friend ModInt operator/(ModInt lhs, const ModInt& rhs) { return lhs /= rhs; }
+  friend ModInt operator+(ModInt lhs, ModInt rhs) { return lhs += rhs; }
+  friend ModInt operator-(ModInt lhs, ModInt rhs) { return lhs -= rhs; }
+  friend ModInt operator*(ModInt lhs, ModInt rhs) { return lhs *= rhs; }
+  friend ModInt operator/(ModInt lhs, ModInt rhs) { return lhs /= rhs; }
   unsigned inv() const {
     int a = data, b = MOD, x = 1, y = 0, q;
     while (b) {
@@ -62,7 +54,6 @@ void ensure_binom(int m) {
 }
 mint binom(ll n, ll m) {
   if (n < m || m < 0) return 0;
-  assert(n <= 5e7 && m <= 5e7);
   ensure_binom(n);
   return fac[n] * ifac[m] * ifac[n - m];
 }

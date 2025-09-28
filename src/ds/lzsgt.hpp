@@ -2,11 +2,12 @@ template <typename Node, typename Tag, Node (*fn)(const Tag&, const Node&)>
 struct SegTree {
   SegTree(int n) : n(n), tags(4 * n), tree(4 * n) {}
   SegTree(const vector<Node>& a) : SegTree(a.size()) { build(1, 0, n, a); }
-  void apply(int l, int r, const Tag& f) { apply(1, 0, n, l, r, f); }
-  Node query(int l, int r) { return query(1, 0, n, l, r); }
+  void apply(int l, int r, Tag f) { _l = l, _r = r, _f = f, apply(1, 0, n); }
+  Node query(int l, int r) { return _l = l, _r = r, query(1, 0, n); }
 
  private:
-  int n;
+  int n, _l, _r;
+  Tag _f;
   vector<Tag> tags;
   vector<Node> tree;
   void update(int p, const Tag& f) {
@@ -24,20 +25,18 @@ struct SegTree {
     build(ls, pl, mid, a), build(rs, mid, pr, a);
     tree[p] = tree[ls] + tree[rs];
   }
-  void apply(int p, int pl, int pr, const int l, const int r, const Tag& f) {
-    if (pl >= r || pr <= l) return;
-    if (l <= pl && pr <= r) return update(p, f);
+  void apply(int p, int pl, int pr) {
+    if (pl >= _r || pr <= _l) return;
+    if (_l <= pl && pr <= _r) return update(p, _f);
     int ls = p * 2, rs = p * 2 + 1, mid = pl + (pr - pl) / 2;
-    pushdown(p);
-    apply(ls, pl, mid, l, r, f), apply(rs, mid, pr, l, r, f);
+    pushdown(p), apply(ls, pl, mid), apply(rs, mid, pr);
     tree[p] = tree[ls] + tree[rs];
   }
-  Node query(int p, int pl, int pr, const int l, const int r) {
-    if (pl >= r || pr <= l) return Node();
-    if (l <= pl && pr <= r) return tree[p];
+  Node query(int p, int pl, int pr) {
+    if (pl >= _r || pr <= _l) return Node();
+    if (_l <= pl && pr <= _r) return tree[p];
     int ls = p * 2, rs = p * 2 + 1, mid = pl + (pr - pl) / 2;
-    pushdown(p);
-    return query(ls, pl, mid, l, r) + query(rs, mid, pr, l, r);
+    return pushdown(p), query(ls, pl, mid) + query(rs, mid, pr);
   }
 };
 struct Node {
