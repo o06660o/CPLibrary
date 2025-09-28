@@ -6,7 +6,7 @@
 using namespace std;
 using ll = long long;
 
-#include "../../../src/graph/dinic.hpp"
+#include "../../src/graph/dinic.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);

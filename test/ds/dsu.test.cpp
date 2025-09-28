@@ -1,9 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/unionfind"
 #include <bits/stdc++.h>
-#define ALL(a) (a).begin(), (a).end()
 using namespace std;
 
-#include "../../../src/ds/dsu_short.hpp"
+#include "../../src/ds/dsu.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
@@ -14,9 +13,9 @@ int main() {
     int op, u, v;
     cin >> op >> u >> v;
     if (op == 0) {
-      dsu.fa[dsu.find(u)] = dsu.find(v);
+      dsu.merge(u, v);
     } else if (op == 1) {
-      cout << (dsu.find(u) == dsu.find(v)) << "\n";
+      cout << dsu.same(u, v) << "\n";
     }
   }
   return 0;
