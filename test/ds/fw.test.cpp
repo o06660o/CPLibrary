@@ -19,7 +19,7 @@ int main() {
     if (op == 0) {
       int p = read(), x = read();
       fw.add(p, x);
-    } else if (op == 1) {
+    } else {
       int l = read(), r = read();
       cout << fw.sum(l, r) << "\n";
     }

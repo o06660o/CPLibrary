@@ -15,7 +15,7 @@ int main() {
     cin >> op >> u >> v;
     if (op == 0) {
       dsu.fa[dsu.find(u)] = dsu.find(v);
-    } else if (op == 1) {
+    } else {
       cout << (dsu.find(u) == dsu.find(v)) << "\n";
     }
   }

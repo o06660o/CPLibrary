@@ -43,8 +43,8 @@ int main() {
   while (q--) {
     int op = read(), l = read(), r = read();
     if (op == 0) {
-      Tag2 t(read(), read());
-      sgt.apply(l, r, t);
+      int b = read(), c = read();
+      sgt.apply(l, r, {b, c});
     } else {
       cout << sgt.query(l, r).sum.data << "\n";
     }

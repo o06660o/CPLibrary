@@ -14,7 +14,7 @@ int main() {
     cin >> op >> u >> v;
     if (op == 0) {
       dsu.merge(u, v);
-    } else if (op == 1) {
+    } else {
       cout << dsu.same(u, v) << "\n";
     }
   }
