@@ -9,7 +9,6 @@ using i128 = __int128_t;
 
 void solve() {
   ll a = read(), b = read();
-  cin >> a >> b;
   cout << i128(a + b) << "\n";
 }
 
