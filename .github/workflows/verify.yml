@@ -27,11 +27,7 @@ jobs:
         uses: competitive-verifier/actions/oj-resolve@v2
         with:
           output-path: verify_files.json
-          # Specify patterns
-          # include: your-own-include/
-          # exclude: your-own-exclude/
-          # If you have config.toml
-          # config: .verify-helper/config.toml
+          config: config.toml
       - name: parse-doxygen
         uses: competitive-verifier/actions/parse-doxygen@v2
         with:
