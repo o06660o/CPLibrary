@@ -1,8 +1,8 @@
 #include "../ds/sgt.hpp"
 struct HLD {
   struct Node {
-    ll sum = 0;
-    friend Node operator+(Node lhs, Node rhs) { return {lhs.sum + rhs.sum}; }
+    ll data = 0;
+    friend Node operator+(Node lhs, Node rhs) { return {lhs.data + rhs.data}; }
   };
   SegTree<Node> sgt = 0;
   vector<int> fa, dep, siz, hson;
@@ -15,7 +15,7 @@ struct HLD {
   void init_dfn(int root) { cur_dfn = 0, dfs1(root, -1), dfs2(root, root); }
   void init_sgt(const vector<int>& a) {
     vector<Node> b(n);
-    for (int i = 0; i < n; i++) b[dfn[i]].sum = a[i];
+    for (int i = 0; i < n; i++) b[dfn[i]].data = a[i];
     sgt = SegTree(b);
   }
   int lca(int u, int v) const {
@@ -27,18 +27,19 @@ struct HLD {
   }
   void add(int p, int x) {
     Node qry = sgt.query(dfn[p], dfn[p] + 1);
-    qry.sum += x;
+    qry.data += x;
     sgt.set(dfn[p], qry);
   }
   ll query(int u, int v) {
-    ll ret = 0;
+    Node ret;
     while (top[u] != top[v]) {
       if (dep[top[u]] < dep[top[v]]) swap(u, v);
-      ret += sgt.query(dfn[top[u]], dfn[u] + 1).sum;
+      ret = ret + sgt.query(dfn[top[u]], dfn[u] + 1);
       u = fa[top[u]];
     }
     if (dfn[u] > dfn[v]) swap(u, v);
-    return ret += sgt.query(dfn[u], dfn[v] + 1).sum;
+    ret = ret + sgt.query(dfn[u], dfn[v] + 1);
+    return ret.data;
   }
 
  private:
