@@ -13,34 +13,34 @@ struct PrimalDual {
     G[u].PUSHB(E.size()), E.PUSHB({u, v, cap, cost, 0});
     G[v].PUSHB(E.size()), E.PUSHB({v, u, 0, -cost, 0});
   }
-  pair<T, T> flow(int s_, int t_, T maxf = INF) {
-    s = s_, t = t_;
+  pair<T, T> flow(int s, int t, T maxf = INF) {
+    _s = s, _t = t;
     bellman_ford();
     T maxflow = 0, mincost = 0;
     while (maxflow < maxf && dijkstra()) {
       T aug = maxf - maxflow;
       for (int i = 0; i < n; i++)
         if (dist[i] != INF) h[i] += dist[i];
-      for (int p = t; p != s; p = E[prev[p] ^ 1].v)
+      for (int p = _t; p != _s; p = E[prev[p] ^ 1].v)
         aug = min(aug, E[prev[p]].cap - E[prev[p]].flow);
-      for (int p = t; p != s; p = E[prev[p] ^ 1].v)
+      for (int p = _t; p != _s; p = E[prev[p] ^ 1].v)
         E[prev[p]].flow += aug, E[prev[p] ^ 1].flow -= aug;
-      maxflow += aug, mincost += aug * h[t];
+      maxflow += aug, mincost += aug * h[_t];
     }
     return {maxflow, mincost};
   }
 
  private:
-  int n, s, t;
+  int n, _s, _t;
   vector<int> prev;
   vector<T> h, dist;
   void bellman_ford() {
     queue<int> que;
     vector<char> in_que(n);
     fill(ALL(h), INF);
-    h[s] = 0;
-    in_que[s] = 1;
-    que.push(s);
+    h[_s] = 0;
+    in_que[_s] = 1;
+    que.push(_s);
     while (!que.empty()) {
       int u = que.front();
       que.pop();
@@ -59,8 +59,8 @@ struct PrimalDual {
   bool dijkstra() {
     priority_queue<pair<T, int>, vector<pair<T, int>>, greater<>> pq;
     fill(ALL(dist), INF);
-    dist[s] = 0;
-    pq.push({0, s});
+    dist[_s] = 0;
+    pq.push({0, _s});
     while (!pq.empty()) {
       auto [d, u] = pq.top();
       pq.pop();
@@ -73,6 +73,6 @@ struct PrimalDual {
         pq.push({dist[v], v});
       }
     }
-    return dist[t] != INF;
+    return dist[_t] != INF;
   }
 };

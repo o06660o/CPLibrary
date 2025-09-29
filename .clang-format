@@ -1,2 +1,4 @@
 BasedOnStyle: Google
-ReflowComments: false
+IndentCaseLabels: false
+ReflowComments: Never
+PackConstructorInitializers: BinPack

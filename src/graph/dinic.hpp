@@ -8,13 +8,13 @@ struct Dinic {
   static constexpr T INF = numeric_limits<T>::max();
   vector<vector<int>> G;
   vector<Edge> E;
-  Dinic(int n) : G(n), n(n), cur(n), h(n) {}
+  Dinic(int n) : G(n), cur(n), h(n) {}
   void adde(int u, int v, T cap) {
     G[u].PUSHB(E.size()), E.PUSHB({u, v, cap, 0});
     G[v].PUSHB(E.size()), E.PUSHB({v, u, 0, 0});
   }
-  T flow(int s_, int t_) {
-    s = s_, t = t_;
+  T flow(int s, int t) {
+    _s = s, _t = t;
     T ret = 0;
     while (bfs()) {
       fill(ALL(cur), 0);
@@ -24,13 +24,13 @@ struct Dinic {
   }
 
  private:
-  int n, s, t;
+  int _s, _t;
   vector<int> cur, h;
   bool bfs() {
     fill(ALL(h), -1);
     queue<int> que;
-    h[s] = 0;
-    que.push(s);
+    h[_s] = 0;
+    que.push(_s);
     while (!que.empty()) {
       int u = que.front();
       que.pop();
@@ -39,13 +39,13 @@ struct Dinic {
         if (h[v] != -1 || cap <= flow) continue;
         h[v] = h[u] + 1;
         que.push(v);
-        if (v == t) return true;
+        if (v == _t) return true;
       }
     }
     return false;
   }
   T dfs(int u, T up) {
-    if (u == t) return up;
+    if (u == _t) return up;
     T rest = up;
     for (int& i = cur[u]; i < int(G[u].size()); i++) {
       auto& [_, v, cap, flow] = E[G[u][i]];
