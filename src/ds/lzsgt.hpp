@@ -45,6 +45,9 @@ struct Node {
 };
 struct Tag {
   ll add = 0;
-  Tag operator+=(const Tag& rhs) { return add += rhs.add, *this; }
+  Tag operator+=(const Tag& rhs) {
+    add += rhs.add;
+    return *this;
+  }
 };
 void fn(const Tag& f, Node& x) { x.sum += x.len * f.add; }
