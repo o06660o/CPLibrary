@@ -33,7 +33,7 @@ int main() {
     sum.data = read();
     len = 1;
   }
-  SegTree<Node_, Tag_, fn_> sgt(a);
+  SegTree<Node_, Tag_, decltype(&fn_)> sgt(a, fn_);
   while (q--) {
     int op = read(), l = read(), r = read();
     if (op == 0) {

@@ -1,7 +1,9 @@
 template <typename Node, typename Tag, typename Fn>
 struct SegTree {
   SegTree(int n, Fn fn) : n(n), fn(fn), tags(4 * n), tree(4 * n) {}
-  SegTree(const vector<Node>& a) : SegTree(a.size()) { build(1, 0, n, a); }
+  SegTree(const vector<Node>& a, Fn fn) : SegTree(a.size(), fn) {
+    build(1, 0, n, a);
+  }
   void apply(int l, int r, Tag f) { _l = l, _r = r, _f = f, apply(1, 0, n); }
   Node query(int l, int r) { return _l = l, _r = r, query(1, 0, n); }
 
