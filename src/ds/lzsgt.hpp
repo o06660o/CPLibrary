@@ -1,6 +1,6 @@
-template <typename Node, typename Tag, void (*fn)(const Tag&, Node&)>
+template <typename Node, typename Tag, typename Fn>
 struct SegTree {
-  SegTree(int n) : n(n), tags(4 * n), tree(4 * n) {}
+  SegTree(int n, Fn fn) : n(n), fn(fn), tags(4 * n), tree(4 * n) {}
   SegTree(const vector<Node>& a) : SegTree(a.size()) { build(1, 0, n, a); }
   void apply(int l, int r, Tag f) { _l = l, _r = r, _f = f, apply(1, 0, n); }
   Node query(int l, int r) { return _l = l, _r = r, query(1, 0, n); }
@@ -8,6 +8,7 @@ struct SegTree {
  private:
   int n, _l, _r;
   Tag _f;
+  Fn fn;
   vector<Tag> tags;
   vector<Node> tree;
   void update(int p, const Tag& f) { fn(f, tree[p]), tags[p] += f; }
