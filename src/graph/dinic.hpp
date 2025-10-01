@@ -6,9 +6,11 @@ struct Dinic {
     T cap, flow;
   };
   static constexpr T INF = numeric_limits<T>::max();
+  int _s, _t;
+  vector<int> cur, h;
   vector<vector<int>> G;
   vector<Edge> E;
-  Dinic(int n) : G(n), cur(n), h(n) {}
+  Dinic(int n) : cur(n), h(n), G(n) {}
   void adde(int u, int v, T cap) {
     G[u].PUSHB(E.size()), E.PUSHB({u, v, cap, 0});
     G[v].PUSHB(E.size()), E.PUSHB({v, u, 0, 0});
@@ -23,9 +25,7 @@ struct Dinic {
     return ret;
   }
 
- private:
-  int _s, _t;
-  vector<int> cur, h;
+ public:
   bool bfs() {
     fill(ALL(h), -1);
     queue<int> que;

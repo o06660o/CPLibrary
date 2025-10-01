@@ -6,9 +6,12 @@ struct PrimalDual {
     T cap, cost, flow;
   };
   static constexpr T INF = numeric_limits<T>::max();
+  int n, _s, _t;
+  vector<int> prev;
+  vector<T> h, dist;
   vector<vector<int>> G;
   vector<Edge> E;
-  PrimalDual(int n) : G(n), n(n), prev(n), h(n), dist(n) {}
+  PrimalDual(int n) : n(n), prev(n), h(n), dist(n), G(n) {}
   void adde(int u, int v, T cap, T cost) {
     G[u].PUSHB(E.size()), E.PUSHB({u, v, cap, cost, 0});
     G[v].PUSHB(E.size()), E.PUSHB({v, u, 0, -cost, 0});
@@ -31,9 +34,6 @@ struct PrimalDual {
   }
 
  private:
-  int n, _s, _t;
-  vector<int> prev;
-  vector<T> h, dist;
   void bellman_ford() {
     queue<int> que;
     vector<char> in_que(n);

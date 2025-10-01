@@ -1,5 +1,8 @@
 template <typename T, typename Op>
 struct SparseTable {
+  int n, m;
+  Op op;
+  vector<vector<T>> data;
   SparseTable(vector<T> vec, Op op)
       : n(vec.size()), m(32 - __builtin_clz(n)), op(op), data(m, vector<T>(n)) {
     data[0] = move(vec);
@@ -11,9 +14,4 @@ struct SparseTable {
     int q = __lg(r - l);
     return op(data[q][l], data[q][r - (1 << q)]);
   }
-
- private:
-  int n, m;
-  Op op;
-  vector<vector<T>> data;
 };

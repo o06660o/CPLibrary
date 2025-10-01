@@ -5,12 +5,13 @@ struct HLD {
     friend Node operator+(Node lhs, Node rhs) { return {lhs.data + rhs.data}; }
   };
   SegTree<Node> sgt = 0;
+  int n, cur_dfn;
   vector<int> fa, dep, siz, hson;
   vector<int> dfn, rdfn, top;
   vector<vector<int>> G;
   HLD(int n)
-      : fa(n, -1), dep(n), siz(n), hson(n, -1), dfn(n), rdfn(n), top(n), G(n),
-        n(n) {}
+      : n(n), fa(n, -1), dep(n), siz(n), hson(n, -1), dfn(n), rdfn(n), top(n),
+        G(n) {}
   void adde(int u, int v) { G[u].PUSHB(v), G[v].PUSHB(u); }
   void init_dfn(int root) { cur_dfn = 0, dfs1(root, -1), dfs2(root, root); }
   void init_sgt(const vector<int>& a) {
@@ -43,7 +44,6 @@ struct HLD {
   }
 
  private:
-  int n, cur_dfn;
   void dfs1(int u, int fa_) {
     fa[u] = fa_;
     siz[u] = 1;

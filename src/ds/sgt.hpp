@@ -1,14 +1,14 @@
 template <typename Node>
 struct SegTree {
+  int n, _pos, _l, _r;
+  Node _node;
+  vector<Node> tree;
   SegTree(int n) : n(n), tree(4 * n) {}
   SegTree(const vector<Node>& a) : SegTree(a.size()) { build(1, 0, n, a); }
   void set(int pos, Node node) { _pos = pos, _node = node, set(1, 0, n); }
   Node query(int l, int r) { return _l = l, _r = r, query(1, 0, n); }
 
  private:
-  int n, _pos, _l, _r;
-  Node _node;
-  vector<Node> tree;
   void build(int p, int pl, int pr, const vector<Node>& a) {
     if (pr - pl == 1) return tree[p] = a[pl], void();
     int ls = p * 2, rs = p * 2 + 1, mid = pl + (pr - pl) / 2;
