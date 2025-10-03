@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_add_range_sum
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite
 #include <bits/stdc++.h>
 #define PUSHB push_back
 using namespace std;
