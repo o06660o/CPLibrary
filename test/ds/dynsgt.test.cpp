@@ -1,10 +1,11 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_add_range_sum
 #include <bits/stdc++.h>
+#define PUSHB push_back
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
 
-#include "../../src/ds/sgt.hpp"
+#include "../../src/ds/dynsgt.hpp"
 #include "../../src/math/modint.hpp"
 #include "../../src/misc/read.hpp"
 

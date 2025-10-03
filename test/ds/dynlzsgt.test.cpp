@@ -1,10 +1,11 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
 #include <bits/stdc++.h>
+#define PUSHB push_back
 using namespace std;
 using ll = long long;
 using ull = unsigned long long;
 
-#include "../../src/ds/lzsgt.hpp"
+#include "../../src/ds/dynlzsgt.hpp"
 #include "../../src/math/modint.hpp"
 #include "../../src/misc/read.hpp"
 
