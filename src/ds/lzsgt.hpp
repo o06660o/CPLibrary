@@ -8,9 +8,9 @@ struct SegTree {
   SegTree(const vector<Node>& a) : SegTree(a.size()) { build(1, 0, n, a); }
   void apply(int l, int r, Tag f) { _l = l, _r = r, _f = f, apply(1, 0, n); }
   Node query(int l, int r) { return _l = l, _r = r, query(1, 0, n); }
-  void update(int p, const Tag& f) { fn(f, tree[p]), tags[p] += f; }
 
  private:
+  void update(int p, const Tag& f) { fn(f, tree[p]), tags[p] += f; }
   void pushdown(int p) {
     int ls = p * 2, rs = p * 2 + 1;
     update(ls, tags[p]), update(rs, tags[p]);
@@ -23,14 +23,14 @@ struct SegTree {
     tree[p] = tree[ls] + tree[rs];
   }
   void apply(int p, int pl, int pr) {
-    if (pl >= _r || pr <= _l) return;
+    if (_r <= pl || pr <= _l) return;
     if (_l <= pl && pr <= _r) return update(p, _f);
     int ls = p * 2, rs = p * 2 + 1, mid = pl + (pr - pl) / 2;
     pushdown(p), apply(ls, pl, mid), apply(rs, mid, pr);
     tree[p] = tree[ls] + tree[rs];
   }
   Node query(int p, int pl, int pr) {
-    if (pl >= _r || pr <= _l) return Node();
+    if (_r <= pl || pr <= _l) return Node();
     if (_l <= pl && pr <= _r) return tree[p];
     int ls = p * 2, rs = p * 2 + 1, mid = pl + (pr - pl) / 2;
     return pushdown(p), query(ls, pl, mid) + query(rs, mid, pr);

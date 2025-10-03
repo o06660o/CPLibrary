@@ -22,7 +22,7 @@ struct SegTree {
     tree[p] = tree[ls] + tree[rs];
   }
   Node query(int p, int pl, int pr) {
-    if (pl >= _r || pr <= _l) return Node();
+    if (_r <= pl || pr <= _l) return Node();
     if (_l <= pl && pr <= _r) return tree[p];
     int ls = p * 2, rs = p * 2 + 1, mid = pl + (pr - pl) / 2;
     return query(ls, pl, mid) + query(rs, mid, pr);

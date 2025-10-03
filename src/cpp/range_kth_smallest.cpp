@@ -31,7 +31,7 @@ struct SegTree {
     return pushup(build(pl, mid), build(mid, pr));
   }
   int add(int p, int pl, int pr) {
-    if (pl > _pos || pr <= _pos) return p;
+    if (_pos < pl || pr <= _pos) return p;
     if (pr - pl == 1) return new_(Node{tree[p].sum + 1, -1, -1});
     return pushup(add(tree[p].ls, pl, mid), add(tree[p].rs, mid, pr));
   }
