@@ -29,12 +29,11 @@ void fn_(Info_& x, const Tag_& f) { x.sum = x.sum * f.b + f.c * x.len; }
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
   int n = read(), q = read();
-  vector<Info_> a(n);
-  for (auto& [sum, len] : a) {
-    sum.data = read();
-    len = 1;
+  SegTree<Info_, Tag_, fn_> sgt(n);
+  for (int i = 0; i < n; i++) {
+    int x = read();
+    sgt.set(i, {x, 1});
   }
-  SegTree<Info_, Tag_, fn_> sgt(a);
   while (q--) {
     int op = read(), l = read(), r = read();
     if (op == 0) {

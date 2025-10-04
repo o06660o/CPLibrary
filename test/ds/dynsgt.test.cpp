@@ -19,11 +19,11 @@ struct Info_ {
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
   int n = read(), q = read();
-  vector<Info_> a(n);
-  for (auto& x : a) {
-    x.a = read(), x.b = read();
+  SegTree<Info_> sgt(n);
+  for (int i = 0; i < n; i++) {
+    int a = read(), b = read();
+    sgt.set(i, {a, b});
   }
-  SegTree sgt(a);
   while (q--) {
     int op = read();
     if (op == 0) {
