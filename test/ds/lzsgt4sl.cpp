@@ -5,7 +5,8 @@
 using namespace std;
 using ll = long long;
 
-#include "../../src/ds/sgt4sl.hpp"
+#include "../../src/ds/lzsgt4sl.hpp"
+#include "../../src/misc/read.hpp"
 
 struct Line {
   int sign, x, y1, y2;
@@ -13,13 +14,11 @@ struct Line {
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
-  int n;
-  cin >> n;
+  int n = read();
   vector<Line> a(2 * n);
   vector<int> dc(2 * n);
   for (int i = 0; i < 2 * n; i += 2) {
-    int x1, y1, x2, y2;
-    cin >> x1 >> y1 >> x2 >> y2;
+    int x1 = read(), y1 = read(), x2 = read(), y2 = read();
     a[i] = {1, x1, y1, y2}, a[i + 1] = {-1, x2, y1, y2};
     dc[i] = y1, dc[i + 1] = y2;
   }

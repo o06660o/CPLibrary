@@ -47,3 +47,18 @@ struct SegTree {
     return pushdown(p), sum(ls, pl, mid) + sum(rs, mid, pr);
   }
 };
+struct Info {
+  ll sum = 0;
+  int len = 0;
+  friend Info operator+(const Info& lhs, const Info& rhs) {
+    return {lhs.sum + rhs.sum, lhs.len + rhs.len};
+  }
+};
+struct Tag {
+  ll add = 0;
+  Tag operator+=(const Tag& rhs) {
+    add += rhs.add;
+    return *this;
+  }
+};
+void fn(Info& x, const Tag& f) { x.sum += x.len * f.add; }
