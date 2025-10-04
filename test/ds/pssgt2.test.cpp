@@ -34,9 +34,8 @@ int main() {
   while (q--) {
     int l, r, k;
     cin >> l >> r >> k;
-    l--;
     int qry = sgt.bsearch(sgt.root[l], sgt.root[r],
-                          [&](Info x) { return x.data < k; });
+                          [&](Info x) { return x.data <= k; });
     cout << dc[qry] << "\n";
   }
   return 0;
