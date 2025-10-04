@@ -4,7 +4,7 @@
 #define PUSHB push_back
 using namespace std;
 
-#include "../../src/ds/sgt4kth.hpp"
+#include "../../src/ds/pssgt.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
@@ -24,15 +24,19 @@ int main() {
   for (auto& x : a) {
     x = mp[x];
   }
-  SegTree sgt(N);
+  SegTree<Info> sgt(N);
+  vector<int> buf(N);
   for (int i = 0; i < n; i++) {
-    sgt.add(sgt.root.back(), a[i]);
+    buf[a[i]]++;
+    sgt.set(sgt.root.back(), a[i], Info{buf[a[i]]});
   }
 
   while (q--) {
     int l, r, k;
     cin >> l >> r >> k;
-    int qry = sgt.query(sgt.root[l], sgt.root[r], l, r, k + 1);
+    l--;
+    int qry = sgt.bsearch(sgt.root[l], sgt.root[r],
+                          [&](Info x) { return x.data < k; });
     cout << dc[qry] << "\n";
   }
   return 0;
