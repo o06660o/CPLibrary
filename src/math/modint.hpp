@@ -16,19 +16,19 @@ struct ModInt {
   friend ModInt operator*(ModInt lhs, ModInt rhs) { return lhs *= rhs; }
   friend ModInt operator/(ModInt lhs, ModInt rhs) { return lhs /= rhs; }
   unsigned inv() const {
-    int x, y;  // Inverse does not exist if gcd(data, MOD) != 1.
+    ll x, y;  // Inverse does not exist if gcd(data, MOD) != 1.
     assert(exgcd(data, MOD, x, y) == 1);
     return norm(x);
   }
   ModInt pow(ull n) const { return pow_mod(data, n); }
-
- private:
-  static int exgcd(int a, int b, int& x, int& y) {
+  static ll exgcd(ll a, ll b, ll& x, ll& y) {
     x = 1, y = 0;
+    ll x1 = 0, y1 = 1;
     while (b) {
-      int q = a / b;
+      ll q = a / b;
       swap(a -= q * b, b);
-      swap(x -= q * y, y);
+      swap(x -= q * x1, x1);
+      swap(y -= q * y1, y1);
     }
     return a;
   }
@@ -40,6 +40,8 @@ struct ModInt {
     }
     return ret;
   }
+
+ private:
   static unsigned norm(unsigned x) {
     if ((x >> (8 * sizeof(unsigned) - 1)) & 1) x += MOD;
     return x >= MOD ? x -= MOD : x;

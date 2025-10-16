@@ -13,3 +13,5 @@ using pii = pair<int, int>;
 using pll = pair<ll, ll>;
 using pli = pair<ll, int>;
 using pil = pair<int, ll>;
+
+constexpr int MAXN = 1e5 + 5;
