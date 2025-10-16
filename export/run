@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+python export/src2md.py
+typst compile export/main.typ
+printf "Successfully generated main.pdf.\n"
+mv export/main.pdf main.pdf
