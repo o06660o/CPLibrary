@@ -1,9 +1,7 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/scc
 #include <bits/stdc++.h>
 #define PUSHB push_back
-#define ALL(a) (a).begin(), (a).end()
 using namespace std;
-using ll = long long;
 using pii = pair<int, int>;
 
 #include "../../src/graph/scc.hpp"
