@@ -1,5 +1,4 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/enumerate_primes
-#define PROBLEM "https://judge.yosupo.jp/problem/enumerate_primes"
 #include <bits/stdc++.h>
 #define ALL(a) (a).begin(), (a).end()
 using namespace std;
