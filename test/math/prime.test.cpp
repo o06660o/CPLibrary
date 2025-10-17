@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/enumerate_primes
 #include <bits/stdc++.h>
+#define PUSHB push_back
 #define ALL(a) (a).begin(), (a).end()
 using namespace std;
 

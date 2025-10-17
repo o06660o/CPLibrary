@@ -3,17 +3,18 @@
 #define PUSHB push_back
 using namespace std;
 using pii = pair<int, int>;
+using ll = long long;
 
 #include "../../src/graph/scc.hpp"
+#include "../../src/misc/read.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
-  int n, m;
-  cin >> n >> m;
+  int n = read(), m = read();
   vector<pii> E(m);
   SCC scc(n);
   for (auto& [u, v] : E) {
-    cin >> u >> v;
+    u = read(), v = read();
     scc.adde(u, v);
   }
   int N = scc.work();

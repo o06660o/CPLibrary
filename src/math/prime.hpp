@@ -4,7 +4,7 @@ void init_prime_table() {
   is_prime.set();
   is_prime[0] = is_prime[1] = false;
   for (int i = 2; i < MAXN; i++) {
-    if (is_prime[i]) primes.push_back(i);
+    if (is_prime[i]) primes.PUSHB(i);
     for (int p : primes) {
       if (i * p >= MAXN) break;
       is_prime[i * p] = false;

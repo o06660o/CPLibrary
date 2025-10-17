@@ -5,7 +5,7 @@ struct SCC {
   vector<int> dfn, low, sccid;
   vector<vector<int>> G;
   SCC(int n) : n(n), dfn(n, -1), low(n), sccid(n, -1), G(n) {}
-  void adde(int u, int v) { G[u].push_back(v); }
+  void adde(int u, int v) { G[u].PUSHB(v); }
   int work() {
     cur_dfn = cur_scc = 0;
     for (int i = 0; i < n; i++)

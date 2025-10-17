@@ -3,17 +3,18 @@
 #define PUSHB push_back
 using namespace std;
 using pii = pair<int, int>;
+using ll = long long;
 
 #include "../../src/graph/vbcc.hpp"
+#include "../../src/misc/read.hpp"
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
-  int n, m;
-  cin >> n >> m;
+  int n = read(), m = read();
+  using ll = long long;
   VBCC vbcc(n);
   for (int _ = 0; _ < m; _++) {
-    int u, v;
-    cin >> u >> v;
+    int u = read(), v = read();
     vbcc.adde(u, v);
   }
   int N = vbcc.work();

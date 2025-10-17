@@ -1,4 +1,4 @@
-// 计算无向图欧拉回路或路径, 时间复杂度 $\mathcal{O}(n + m)$.
+// 无向图欧拉回路或路径, 时间复杂度 $\mathcal{O}(n + m)$.
 struct Euler {
   int n, m = 0;
   vector<char> used;
