@@ -6,7 +6,7 @@ struct VBCC {
   vector<int> dfn, low;
   vector<vector<int>> vbccs;
   vector<vector<pii>> G;
-  VBCC(int n) : n(n), is_cut(n), dfn(n, -1), low(n) {}
+  VBCC(int n) : n(n), is_cut(n), dfn(n, -1), low(n), G(n) {}
   void adde(int u, int v) { G[u].PUSHB({v, m}), G[v].PUSHB({u, m++}); }
   int work() {
     for (int i = 0; i < n; i++)
