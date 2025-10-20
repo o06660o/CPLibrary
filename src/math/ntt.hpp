@@ -2,7 +2,6 @@
 template <int MOD = 998244353, int G = 114514, int GI = 137043501>
 struct Poly {
   vector<mint> data;
-
   friend Poly operator*(const Poly& a, const Poly& b) {
     int n = 1, new_sz = a.data.size() + b.data.size() - 1;
     while (n < int(a.data.size() + b.data.size())) n *= 2;
@@ -10,9 +9,8 @@ struct Poly {
     A.resize(n), B.resize(n);
     ntt(A, 1), ntt(B, 1);
     for (int i = 0; i < n; i++) A[i] *= B[i];
-    ntt(A, -1);
-    A.resize(new_sz);
-    return Poly{A};
+    ntt(A, -1), A.resize(new_sz);
+    return A;
   }
 
  private:

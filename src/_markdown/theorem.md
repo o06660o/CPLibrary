@@ -209,3 +209,29 @@ $$
 $$
 常见组合意义: 由 $n$ 个 $+1$ 与 $n$ 个 $-1$ 组成的数列 $a_1, a_2, \ldots, a_{2n}$, 其部分和总是满足
 $a_1 + a_2 + \cdots + a_k \ge 0 \quad (k = 1, 2, 3, \ldots, 2n)$ 的方案数为 $C_n$.
+
+### 生成函数
+
+普通生成函数 OGF 的形式为 $F(x) = \sum\limits_{n = 0}^{\infty}a_n x^n$, 指数生成函数 EGF 的形式为
+$F(x) = \sum\limits_{n = 0}^{\infty}\dfrac{a_n}{x_n} x^n$.
+
+从 $n$ 个球中选出若干个放入袋子 $1, 2, 3$, 要求袋子 $1$ 放入 $a$ 倍数个, 袋子 $2$ 放入 $b$ 倍数个,
+袋子 $3$ 放入 $c$ 倍数个.
+
+如果这 $n$ 个球全部相同, 那么方案数为多项式
+$$
+  G(x) =
+  \left(\sum\limits_{n = 0}^{\infty}x^{na}\right)
+  \times \left(\sum\limits_{n = 0}^{\infty}x^{nb}\right)
+  \times \left(\sum\limits_{n = 0}^{\infty} x^{nc}\right)
+$$
+的第 $n$ 项.
+
+如果这 $n$ 个球两两不同, 那么方案数为多项式
+$$
+  G(x) =
+  \left(\sum\limits_{n = 0}^{\infty}\dfrac{1}{(na)!}x^{na}\right)
+  \times \left(\sum\limits_{n = 0}^{\infty}\dfrac{1}{(nb)!}x^{nb}\right)
+  \times \left(\sum\limits_{n = 0}^{\infty}\dfrac{1}{(nc)!}x^{nc}\right)
+$$
+的第 $n$ 项.
