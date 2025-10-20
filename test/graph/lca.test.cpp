@@ -1,5 +1,4 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/lca
-#define PROBLEM "https://judge.yosupo.jp/problem/lca"
 #include <bits/stdc++.h>
 #define PUSHB push_back
 #define ALL(a) (a).begin(), (a).end()

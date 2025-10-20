@@ -1,7 +1,7 @@
 template <unsigned MOD>
 struct ModInt {
-  unsigned data = 0;
-  ModInt(ll v) : data(norm(v % MOD)) {}
+  unsigned data;
+  ModInt(ll v = 0) : data(norm(v % MOD)) {}
   ModInt operator-() const { return MOD - data; }
   ModInt& operator+=(ModInt rhs) { return data = norm(data + rhs.data), *this; }
   ModInt& operator-=(ModInt rhs) { return data = norm(data - rhs.data), *this; }
