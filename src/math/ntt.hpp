@@ -10,7 +10,7 @@ struct Poly {
     ntt(A, 1), ntt(B, 1);
     for (int i = 0; i < n; i++) A[i] *= B[i];
     ntt(A, -1), A.resize(new_sz);
-    return A;
+    return {A};
   }
 
  private:

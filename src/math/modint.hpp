@@ -32,11 +32,11 @@ struct ModInt {
     }
     return a;
   }
-  static ull pow_mod(ull a, ull n) {
-    ull ret = 1;
+  static unsigned pow_mod(unsigned a, ull n) {
+    unsigned ret = 1;
     for (; n; n /= 2) {
-      if (n & 1) ret = ret * a % MOD;
-      a = a * a % MOD;
+      if (n & 1) ret = ull(ret) * a % MOD;
+      a = ull(a) * a % MOD;
     }
     return ret;
   }
