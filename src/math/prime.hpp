@@ -1,13 +1,13 @@
 vector<int> primes;
-bitset<MAXN> is_prime;
+bitset<MAXN> isprime;
 void init_prime_table() {
-  is_prime.set();
-  is_prime[0] = is_prime[1] = false;
+  isprime.set();
+  isprime[0] = isprime[1] = false;
   for (int i = 2; i < MAXN; i++) {
-    if (is_prime[i]) primes.PUSHB(i);
+    if (isprime[i]) primes.PUSHB(i);
     for (int p : primes) {
       if (i * p >= MAXN) break;
-      is_prime[i * p] = false;
+      isprime[i * p] = false;
       if (i % p == 0) break;
     }
   }

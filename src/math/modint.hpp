@@ -20,7 +20,7 @@ struct ModInt {
     assert(exgcd(data, MOD, x, y) == 1);
     return norm(x);
   }
-  ModInt pow(ull n) const { return pow_mod(data, n); }
+  ModInt pow(ull n) const { return pow_mod(data, n, MOD); }
   static ll exgcd(ll a, ll b, ll& x, ll& y) {
     x = 1, y = 0;
     ll x1 = 0, y1 = 1;
@@ -32,11 +32,11 @@ struct ModInt {
     }
     return a;
   }
-  static unsigned pow_mod(unsigned a, ull n) {
+  static unsigned pow_mod(unsigned a, ull n, unsigned p) {
     unsigned ret = 1;
     for (; n; n /= 2) {
-      if (n & 1) ret = ull(ret) * a % MOD;
-      a = ull(a) * a % MOD;
+      if (n & 1) ret = ull(ret) * a % p;
+      a = ull(a) * a % p;
     }
     return ret;
   }
