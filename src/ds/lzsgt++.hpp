@@ -1,4 +1,4 @@
-// `max_right` 可能不可靠, 目前验证方式有
+// `bsearch` 可能不可靠, 目前验证方式有
 // - https://atcoder.jp/contests/abc426/tasks/abc426_f
 // - https://atcoder.jp/contests/abc389/tasks/abc389_f
 template <typename Info, typename Tag, void (*fn)(Info&, const Tag&)>
