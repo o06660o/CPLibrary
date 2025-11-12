@@ -13,3 +13,14 @@ mint binom(ll n, ll m) {
   ensure_binom(n);
   return fac[n] * ifac[m] * ifac[n - m];
 }
+vector<vector<mint>> init_binom_table(int n) {
+  vector<vector<mint>> binom(n + 1, vector<mint>(n + 1, 0));
+  binom[0][0] = 1;
+  for (int i = 1; i <= n; i++) {
+    binom[i][0] = 1;
+    for (int j = 1; j <= i; j++) {
+      binom[i][j] = binom[i - 1][j - 1] + binom[i - 1][j];
+    }
+  }
+  return binom;
+}

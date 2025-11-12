@@ -1,3 +1,6 @@
+// `max_right` 可能不可靠, 目前验证方式有
+// - https://atcoder.jp/contests/abc426/tasks/abc426_f
+// - https://atcoder.jp/contests/abc389/tasks/abc389_f
 template <typename Info, typename Tag, void (*fn)(Info&, const Tag&)>
 struct SegTree {
   int n, _l, _r;
@@ -9,6 +12,10 @@ struct SegTree {
   SegTree(const vector<Info>& a) : SegTree(a.size()) { build(1, 0, n, a); }
   void apply(int l, int r, Tag f) { _l = l, _r = r, _f = f, apply(1, 0, n); }
   Info sum(int l, int r) { return _l = l, _r = r, sum(1, 0, n); }
+  template <typename P>
+  int bsearch(int l, P pred) {
+    return _acc = {}, _l = l, bsearch(1, 0, n, pred);
+  }
 
  private:
   void update(int p, const Tag& f) { fn(tree[p], f), tags[p] += f; }
@@ -35,7 +42,20 @@ struct SegTree {
     int ls = p * 2, rs = p * 2 + 1, mid = pl + (pr - pl) / 2;
     return pushdown(p), sum(ls, pl, mid) + sum(rs, mid, pr);
   }
+  template <typename P>
+  int bsearch(int p, int pl, int pr, P pred) {
+    if (_l >= pr) return pr;
+    if (_l <= pl) {
+      if (pred(_acc + tree[p])) return _acc = _acc + tree[p], pr;
+      if (pr - pl == 1) return pl;
+    }
+    int ls = p * 2, rs = p * 2 + 1, mid = pl + (pr - pl) / 2;
+    pushdown(p);
+    int qry = bsearch(ls, pl, mid, pred);
+    return qry < mid ? qry : bsearch(rs, mid, pr, pred);
+  }
 };
+
 struct Info {
   ll sum = 0;
   int len = 0;

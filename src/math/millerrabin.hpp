@@ -1,12 +1,5 @@
 // 时间复杂度: $\mathcal{O}(k \log n)$，目前 $k = 9$ 足以判定 $64$ 位整数.
-ll pow_mod_ll(ll a, ull n, ll p) {
-  ll ret = 1;
-  for (; n; n /= 2) {
-    if (n & 1) ret = i128(ret) * a % p;
-    a = i128(a) * a % p;
-  }
-  return ret;
-}
+#include "pow_mod_ll.hpp"
 bool isprime(ll n) {
   if (n < 2) return 0;
   int s = __builtin_ctzll(n - 1);

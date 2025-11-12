@@ -1,48 +1,4 @@
-## 公式
-
-### 主定理
-
-如果有递推关系式
-$$
-  T(n) = aT\left(\frac{n}{b}\right) + f(n)
-$$
-其中 $a \ge 1, b > 1, n \in \mathbb{N}$, 那么
-$$
-  T(n) = \begin{cases}
-    \Theta(n^{\log_b a})              & \text{ if } f(n) = \mathcal{O}(n^{\log_b a - \varepsilon})
-    \text{ for some } \varepsilon > 0                                                             \\
-    \Theta(n^{\log_b a}\log^{k + 1}n) & \text{ if } f(n) = \Theta(n^{\log_b a}\log^k n)
-    \text{ for some } k \ge 0                                                                     \\
-    \Theta(f(n))                      & \text{ if } f(n) = \Omega(n^{\log_b a + \varepsilon})
-    \text{ for some } \varepsilon > 0
-  \end{cases}
-$$
-其中最后一条还要求对于某个常数 $c < 1$ 以及所有充分大的 $n$, 有 $a f(n / b) \le c f(n)$.
-
-### 数论分块
-
-对于形如
-$$
-  \sum\limits_{i = 1}^n f(i) g\left(\left\lfloor\dfrac{n}{i}\right\rfloor\right)
-$$
-的和式, 如果可以 $\mathcal{O}(1)$ 计算出 $f(i)$ 的区间和, 那么可以利用数论分块在
-$\mathcal{O}(\sqrt{n})$ 的时间内完成计算.
-
-核心思想是给定正整数 $n, l$, 如果令 $r = \left\lfloor \dfrac{n}{\lfloor n / l \rfloor}
-\right\rfloor$, 那么 $\forall x \in [l, r]$, 有 $\left\lfloor\dfrac{n}{x}\right\rfloor$ 为定值.
-
-下面是 $f(x) = 1, g(x) = x$ 时的特例.
-
-```cpp
-i128 floor_sum(ll n) {
-  i128 ret = 0;
-  for (ll l = 1, r; l <= n; l = r) {
-    r = n / (n / l) + 1;
-    ret += (r - l) * (n / l);
-  }
-  return ret;
-}
-```
+## 数学
 
 ### Fermat 小定理
 
@@ -125,13 +81,6 @@ pll excrt(const vector<int>& a, const vector<int>& m) {
 }
 ```
 
-### 大步小步算法
-
-对于高次同余方程 $a^x \equiv b \pmod{p}$, 如果 $a, p$ 互质, 令 $t = \lceil \sqrt{p} \rceil$,
-可以把 $x$ 改写为 $i \times t - j$, 其中 $0 \le i \le t, 0 \le j < t$. 方程变为
-$(a^t)^i \equiv b \times a^j \pmod{p}$, 先枚举 $j$ 把右边结果插入哈希表, 再枚举 $i$
-寻找是否有对应元素.
-
 ### 组合数的性质
 
 $$
@@ -178,9 +127,9 @@ $$
   \begin{aligned}
     \left|\bigcup_{i = 1}^k \overline{S_i}\right|
      & =
-    \sum_{i = 1}^k |\overline{S_i}| - \sum_{1 \le i_1 < i_2 \le k} |\overline{S_{i_1}} \cap
-    \overline{S_{i_2}}| + \sum_{1 \le i_1 < i_2 < i_3 \le k} |\overline{S_{i_1}} \cap
-    \overline{S_{i_2}} \cap \overline{S_{i_3}}| - \cdots + (-1)^{k - 1}
+    \sum_{i = 1}^k \left|\overline{S_i}\right| - \sum_{1 \le i_1 < i_2 \le k} \left|\overline{S_{i_1}} \cap
+    \overline{S_{i_2}}\right| + \sum_{1 \le i_1 < i_2 < i_3 \le k} \left|\overline{S_{i_1}} \cap
+    \overline{S_{i_2}} \cap \overline{S_{i_3}}\right| - \cdots + (-1)^{k - 1}
     \left|\bigcap_{i = 1}^k \overline{S_i}\right|                                     \\
      & = \sum_{i = 1}^k \binom{k + r - n_i - 2}{k - 1} - \sum_{1 \le i_1 < i_2 \le k}
     \binom{k + r - n_{i_1} - n_{i_2} - 3}{k - 1}                                      \\
@@ -191,8 +140,8 @@ $$
 $$
 最后答案为
 $$
-  C = |U| - \left|\bigcup\limits_{i = 1}^k \overline{S_i}\right| =
-  \sum_{p = 0}^k (-1)^p \sum_{|A| = p} \binom{k + r - \sum\limits_{i \in A}n_i - (p + 1)}{k - 1}
+  C = \left|U\right| - \left|\bigcup\limits_{i = 1}^k \overline{S_i}\right| =
+  \sum_{p = 0}^k (-1)^p \sum_{\left|A\right| = p} \binom{k + r - \sum\limits_{i \in A}n_i - (p + 1)}{k - 1}
 $$
 实现就是二进制枚举子集 $A$.
 
@@ -210,10 +159,44 @@ $$
 常见组合意义: 由 $n$ 个 $+1$ 与 $n$ 个 $-1$ 组成的数列 $a_1, a_2, \ldots, a_{2n}$, 其部分和总是满足
 $a_1 + a_2 + \cdots + a_k \ge 0 \quad (k = 1, 2, 3, \ldots, 2n)$ 的方案数为 $C_n$.
 
+### 数论分块
+
+对于形如
+$$
+  \sum\limits_{i = 1}^n f(i) g\left(\left\lfloor\dfrac{n}{i}\right\rfloor\right)
+$$
+的和式, 如果可以 $\mathcal{O}(1)$ 计算出 $f(i)$ 的区间和, 那么可以利用数论分块在
+$\mathcal{O}(\sqrt{n})$ 的时间内完成计算.
+
+核心思想是给定正整数 $n, l$, 如果令 $r = \left\lfloor \dfrac{n}{\lfloor n / l \rfloor}
+\right\rfloor$, 那么 $\forall x \in [l, r]$, 有 $\left\lfloor\dfrac{n}{x}\right\rfloor$ 为定值.
+
+下面是 $f(x) = 1, g(x) = x$ 时的特例.
+
+```cpp
+i128 floor_sum(ll n) {
+  i128 ret = 0;
+  for (ll l = 1, r; l <= n; l = r) {
+    r = n / (n / l) + 1;
+    ret += (r - l) * (n / l);
+  }
+  return ret;
+}
+```
+
+### 大步小步算法
+
+对于高次同余方程 $a^x \equiv b \pmod{p}$, 如果 $a, p$ 互质, 令 $t = \lceil \sqrt{p} \rceil$,
+可以把 $x$ 改写为 $i \times t - j$, 其中 $0 \le i \le t, 0 \le j < t$. 方程变为
+$(a^t)^i \equiv b \times a^j \pmod{p}$, 先枚举 $j$ 把右边结果插入哈希表, 再枚举 $i$
+寻找是否有对应元素.
+
 ### 生成函数
 
 普通生成函数 OGF 的形式为 $F(x) = \sum\limits_{n = 0}^{\infty}a_n x^n$, 指数生成函数 EGF 的形式为
 $F(x) = \sum\limits_{n = 0}^{\infty}\dfrac{a_n}{x_n} x^n$.
+
+应用:
 
 从 $n$ 个球中选出若干个放入袋子 $1, 2, 3$, 要求袋子 $1$ 放入 $a$ 倍数个, 袋子 $2$ 放入 $b$ 倍数个,
 袋子 $3$ 放入 $c$ 倍数个.
@@ -235,3 +218,96 @@ $$
   \times \left(\sum\limits_{n = 0}^{\infty}\dfrac{1}{(nc)!}x^{nc}\right)
 $$
 的第 $n$ 项.
+
+<!--
+### 二项式变换
+
+给定一个数列 $\{a_n\}$, 选取从 $a_s$ 开始的子列, 经过二项式变换后得到数列
+$\{b_n\}$, 也可以从 $\{b_n\}$ 逆变换回 $\{a_n\}$.
+$$
+  b_n = \sum_{k = s}^{n} \binom{n}{k} a_k
+  \Leftrightarrow
+  a_n = \sum_{k = s}^{n} (-1)^{n - k} \binom{n}{k} b_k
+$$
+
+有 $n$ 个约束条件, 记 $f_m$ 为恰好满足 $m$ 条约束的方案数, $g_m$ 为至多满足 $m$ 条约束的方案数,
+$h_m$ 为至少满足 $m$ 条约束的方案数.
+
+若已知 $f_m$, 则有关系
+$$
+  g_m = \sum_{i = 0}^m \binom{m}{i} f_i
+  \quad
+  h_m = \sum_{i = m}^n \binom{i}{m} f_i
+$$
+
+反过来求 $f_m$ 可以利用
+$$
+  f_m = \sum_{i = 0}^m (-1)^{m - i} \binom{m}{i} g_i
+  \quad
+  f_m = \sum_{i = m}^n (-1)^{i - m} \binom{i}{m} h_i
+$$
+-->
+
+### Z 变换
+
+设全集 $X = \{1, 2, \ldots, n\}$, 对每个子集 $S \subseteq X$, 有一个值 $f(S)$. 如果 $g(S)$
+是对所有子集求和的结果, $h(S)$ 是对所有超集求和的结果. 利用 $f(S)$ 可以 Z 变换得到 $g(S)$ 或者
+$h(S)$, 也可以从 $g(S)$ 或者 $h(S)$ 逆变换回 $f(S)$. (逆变换也称为集合上的 Mobius 变换)
+
+$$
+  g(S) = \sum_{T \subseteq S} f(T)
+  \Leftrightarrow
+  f(S) = \sum_{T \subseteq S} (-1)^{\left|S\right| - \left|T\right|} g(T)
+$$
+$$
+  h(S) = \sum_{T \supseteq S} f(T)
+  \Leftrightarrow
+  f(S) = \sum_{T \supseteq S} (-1)^{\left|T\right| - \left|S\right|} h(T)
+$$
+
+应用:
+
+有 $n$ 个不同的约束条件对应全集, 记 $f(S)$ 为恰好只满足 $i \in S$ 的条件的方案数. 那么 $g(S)$
+相当于只可能满足 $i \in S$ 的条件的方案数; $h(S)$ 相当于至少满足 $i \in S$ 的条件的方案数.
+
+## 图论
+
+### 差分约束系统
+
+对于约束条件 $x_i \le x_j + w$, 从 $j$ 到 $i$ 连权值为 $w$ 的边, 还需要建立超级源想每个点连权值为
+$n$ 的边, 跑最短路, 存在负环则无解.
+
+## 杂项
+
+### 主定理
+
+如果有递推关系式
+$$
+  T(n) = aT\left(\frac{n}{b}\right) + f(n)
+$$
+其中 $a \ge 1, b > 1, n \in \mathbb{N}$, 那么
+$$
+  T(n) = \begin{cases}
+    \Theta(n^{\log_b a})              & \text{ if } f(n) = \mathcal{O}(n^{\log_b a - \varepsilon})
+    \text{ for some } \varepsilon > 0                                                             \\
+    \Theta(n^{\log_b a}\log^{k + 1}n) & \text{ if } f(n) = \Theta(n^{\log_b a}\log^k n)
+    \text{ for some } k \ge 0                                                                     \\
+    \Theta(f(n))                      & \text{ if } f(n) = \Omega(n^{\log_b a + \varepsilon})
+    \text{ for some } \varepsilon > 0
+  \end{cases}
+$$
+其中最后一条还要求对于某个常数 $c < 1$ 以及所有充分大的 $n$, 有 $a f(n / b) \le c f(n)$.
+
+## C++
+
+TODO
+
+- `stoll()`
+- `sscanf()`, `sprintf()`
+- `string::find()`
+
+- `atoi()`
+
+- `sort()`, `unique()`, `erase()`, `next_permutation()`, `lower_bound()`, `upper_bound()`
+
+- `std::regex`

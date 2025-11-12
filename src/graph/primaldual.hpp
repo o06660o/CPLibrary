@@ -36,21 +36,21 @@ struct PrimalDual {
  private:
   void bellman_ford() {
     queue<int> que;
-    vector<char> in_que(n);
+    vector<char> inque(n);
     fill(ALL(h), INF);
     h[_s] = 0;
-    in_que[_s] = 1;
+    inque[_s] = 1;
     que.push(_s);
     while (!que.empty()) {
       int u = que.front();
       que.pop();
-      in_que[u] = 0;
+      inque[u] = 0;
       for (int i : G[u]) {
         const auto& [_, v, cap, cost, flow] = E[i];
         if (cap <= flow || h[v] <= h[u] + cost) continue;
         h[v] = h[u] + cost;
-        if (!in_que[v]) {
-          in_que[v] = 1;
+        if (!inque[v]) {
+          inque[v] = 1;
           que.push(v);
         }
       }

@@ -1,3 +1,4 @@
+// 时间复杂度瓶颈在质因数分解.
 #include "pollardrho.hpp"
 ll proot(ll p) {
   if (p == 2) return 1;
