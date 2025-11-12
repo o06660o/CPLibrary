@@ -272,12 +272,92 @@ $$
 
 ## 图论
 
+### 基环树
+
+```cpp
+//  遍历基环树森林中的一棵树, 并标记出环.
+//  - 时间复杂度 $\mathcal{O}(n)$.
+//  - FIXME: 如果有自环, 那么这个环不会被标记 `vis[v] = 3`.
+void cyctree() {
+  int n;                     // Input.
+  vector<vector<pii>> G(n);  // Input. First: to, second: edge id.
+  vector<int> vis(n);        // Input.
+
+  auto assign_vis = [&](auto&& self, int u, int fid) -> void {
+    vis[u] = 1;
+    for (auto [v, id] : G[u]) {
+      if (id == fid) continue;
+      if (vis[v] == 1) {
+        vis[v] = 3;
+        vis[u] = 2;
+        continue;
+      } else if (vis[v] == 2) {
+        continue;
+      }
+      self(self, v, id);
+      if (vis[v] == 2) {
+        if (vis[v] != 3) vis[v] = 2;
+      }
+    }
+  };
+}
+```
+
 ### 差分约束系统
 
 对于约束条件 $x_i \le x_j + w$, 从 $j$ 到 $i$ 连权值为 $w$ 的边, 还需要建立超级源想每个点连权值为
 $n$ 的边, 跑最短路, 存在负环则无解.
 
 ## 杂项
+
+### 树上背包
+
+有 $n$ 门课程, 第 $i$ 门课程的学分为 $a_i$, 每门课程有零门或一门先修课,
+有先修课的课程需要先学完其先修课, 才能学习该课程. 一位学生要学习 $m$ 门课程, 求能获得的最大学分数.
+这里定义 $f[u][i]$ 为从 $u$ 为根的树中选出 $i$ 门课程的最大得分, 时间复杂度 $\mathcal{O}(nm)$.
+
+```cpp
+#include <bits/stdc++.h>
+#define PUSHB push_back
+using namespace std;
+
+int main() {
+  cin.tie(nullptr)->sync_with_stdio(false);
+  int n, m;
+  cin >> n >> m;
+  m++;
+  vector<int> a(n + 1);
+  vector<vector<int>> G(n + 1);
+  for (int i = 0; i < n; i++) {
+    int fa;
+    cin >> fa >> a[i];
+    fa--;
+    if (fa == -1) {
+      fa = n;
+    }
+    G[fa].PUSHB(i);
+  }
+
+  vector<int> siz(n + 1);
+  vector<vector<int>> f(n + 1, vector<int>(m + 1));
+  auto dfs = [&](auto&& self, int u) -> void {
+    siz[u] = 1;
+    f[u][1] = a[u];
+    for (int v : G[u]) {
+      self(self, v);
+      for (int j = min(m, siz[u] + siz[v]); j >= 1; j--) {
+        for (int k = max(1, j - siz[u]); k <= min(j - 1, siz[v]); k++) {
+          f[u][j] = max(f[u][j], f[u][j - k] + f[v][k]);
+        }
+      }
+      siz[u] += siz[v];
+    }
+  };
+  dfs(dfs, n);
+  cout << f[n][m] << "\n";
+  return 0;
+}
+```
 
 ### 主定理
 
@@ -298,16 +378,142 @@ $$
 $$
 其中最后一条还要求对于某个常数 $c < 1$ 以及所有充分大的 $n$, 有 $a f(n / b) \le c f(n)$.
 
+### 环境配置
+
+```vim
+" .vimrc
+colo slate
+syn on
+filet plugin indent on
+se nocp nu hls is et sr sw=2 sts=2 cino+=:0,l1,L0 udf spr bo=all
+se mouse=a cb=unnamedplus
+au TerminalOpen * se nonu
+nn <C-s> :w<CR>
+au BufNewFile *.cpp sil! 0r _vim_template.cpp | $d _
+nn <Esc><C-n> :vert ter ./_vim_run %:r<CR>
+nn <Esc><CR> :vs ./cache/main.in<CR>
+nn <F5> :vert ter gdb ./cache/%:r<CR>
+
+" Some platform may need those.
+se t_Co=256 bs=indent,col,start
+lan en_US
+```
+
+```gdb
+# .gdbinit
+set debuginfo enabled off
+```
+
+```cpp
+// _vim_template.cpp
+#include <bits/stdc++.h>
+#define ALL(a) (a).begin(), (a).end()
+#define FOR(i, a, b) for (int i = (a); i < (b); i++)
+#define PUSHB push_back
+using namespace std;
+using ll = long long;
+using ull = unsigned long long;
+using i128 = __int128_t;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+using pli = pair<ll, int>;
+
+void solve() {
+}
+
+int main() {
+  cin.tie(nullptr)->sync_with_stdio(false);
+#ifdef DEBUG
+  freopen("cache/main.in", "r", stdin);
+  freopen("cache/main.out", "w", stdout);
+#endif
+  int tt = 1;
+  cin >> tt;
+  while (tt--) {
+    solve();
+  }
+  return 0;
+}
+```
+
+```bash
+#!/usr/bin/env bash
+# _vim_run
+set -e
+ulimit -s 1048576
+g++-14 -DDEBUG -std=c++17 -g "$1.cpp" -o "./cache/$1" \
+  -fsanitize=address,undefined -Wall -Wpedantic -Wextra
+"./cache/$1" && cat ./cache/main.out
+```
+
+```bash
+#!/usr/bin/env bash
+# _check
+g++ _generator.cpp -O2 -std=c++17 -o ./cache/_generator
+g++ main.cpp -O2 -std=c++17 -o ./cache/main
+g++ std.cpp -O2 -std=c++17 -o ./cache/std
+cnt=0
+while true; do
+  ./cache/_generator >./cache/main.in
+  ./cache/main <./cache/main.in >./cache/main.out
+  ./cache/std <./cache/main.in >./cache/std.out
+  # diff <(head -n 1 ./cache/main.out) <(head -n 1 ./cache/std.out)
+  diff ./cache/main.out ./cache/std.out
+  if [ $? -ne 0 ]; then break; fi
+  cnt=$((cnt + 1))
+  if [ $((cnt % 100)) -eq 0 ]; then
+    cnt=0
+    echo "ok 100 times"
+  fi
+done
+```
+
+```bash
+#!/usr/bin/env bash
+# _check_spj
+g++ _generator.cpp -DSPJ -O2 -std=c++17 -o ./cache/_generator
+g++ main.cpp -DSPJ -O2 -std=c++17 -o ./cache/main
+g++ _spj.cpp -DSPJ -O2 -std=c++17 -o ./cache/_spj
+cnt=0
+while true; do
+  ./cache/_generator >./cache/main.in
+  ./cache/main <./cache/main.in >./cache/main.out
+  ./cache/_spj <./cache/main.out || {
+    echo "spj failed"
+    break
+  }
+  cnt=$((cnt + 1))
+  if [ $((cnt % 100)) -eq 0 ]; then
+    cnt=0
+    echo "ok 100 times"
+  fi
+done
+```
+
 ## C++
 
-TODO
-
-- `stoll()`
-- `sscanf()`, `sprintf()`
-- `string::find()`
-
-- `atoi()`
-
-- `sort()`, `unique()`, `erase()`, `next_permutation()`, `lower_bound()`, `upper_bound()`
-
-- `std::regex`
+- `std::cbrt()`: 传入 `double x`, 计算 $\sqrt[3]{x}$. (更高精度有 `std::cbrtl()`)
+- `std::iota()`: `iota(arr.begin(), arr.end(), 0)`, 从 $0$ 开始填充整个 `arr`.
+- `std::string`:
+  - `std::to_string()`: 传入 `long long`, `long double` 之类的, 返回 `std::string()`.
+  - `atoi()`, `std::stoi()`: 字符串转为整数, 前者是 `const char*` 后者是 `std::string`.
+  更高精度有 `std::stoll()`.
+  - `sscanf()`, `sprintf()`: 类似与 `scanf`, `printf`, 不过第一个参数是 `const char*`.
+  - `std::getline(std::cin, buf)`: 从 `std::cin` 中读入一行内容放入 `buf`.
+  - `.find()`: 查找某个 `char` 或者 `std::string`, 返回 `size_t`, 如果没找到返回 `string::npos`.
+- `std::cout` 格式化输出
+  - `std::fixed` 固定小数点, 不使用科学记数法.
+  - `std::setprecision(n)`: 保留小数点后 $n$ 位.
+  - `std::setw(n)` 指定最小宽度为 $n$, 默认右对齐, 填充空格.
+  - `std::setfill(ch)`: 指定对齐时填充的字符.
+  - `std::left`, `std::right`: 指定左对齐或右对齐.
+  - `std::dec`, `std::hex`, `std::oct`: 以 10/16/8 进制 输出.
+- `std::bitset` 的操作
+  - `.count()`: 返回 `true` 的数量.
+  - `.any()`; `.none()`; `.all()`: 是否存在某一个 `true`; 不存在 `true`; 全部是 `true`.
+  - `.set()`; `.reset()`: 全部设为 `true`; 全部设为 `false`.
+  - `.flip()`: 翻转每一位.
+  - `.to_string()`; `.to_ulong()`; `.to_ullong()`: 类型转换.
+  - `._Find_first()`; `._Find_next(pos)`: 返回第一个 `true` 的下标 (不存在返回 `size()`);
+    返回下标严格大于 `pos` 的第一个 `true` 的下标 (不存在返回 `size()`).
+- `sort()`, `unique()`, `erase()`, `next_permutation()`, `lower_bound()`, `upper_bound()`: 用法略.
