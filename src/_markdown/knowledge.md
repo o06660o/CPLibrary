@@ -380,85 +380,75 @@ $$
 
 ### 环境配置
 
+```bash
+setxkbmap -option caps:escape
+touch _check
+chmod +x _check
+```
+
+`~/.vimrc`:
+
 ```vim
-" .vimrc
 colo slate
 syn on
 filet plugin indent on
-se nocp nu hls is et sr sw=2 sts=2 cino+=:0,l1,L0 udf spr bo=all
-se mouse=a cb=unnamedplus
+se nocp nu hls is et sr sw=2 sts=2 cino+=:0,l1,L0 udf spr bo=all mouse=a
 au TerminalOpen * se nonu
 nn <C-s> :w<CR>
 au BufNewFile *.cpp sil! 0r _vim_template.cpp | $d _
-nn <Esc><C-n> :vert ter ./_vim_run %:r<CR>
-nn <Esc><CR> :vs ./cache/main.in<CR>
-nn <F5> :vert ter gdb ./cache/%:r<CR>
+nn <Esc><C-n> :vert ter bash -c "
+      \ulimit -s 1048576;
+      \g++ -DDEBUG -std=c++17 -g %:r.cpp -o %:r
+      \-fsanitize=address,undefined -Wall
+      \&& ./%:r && cat main.out"<CR>
+nn <Esc><CR> :vs main.in<CR>
+nn <F5> :vert ter gdb %:r<CR>
 
 " Some platform may need those.
 se t_Co=256 bs=indent,col,start
 lan en_US
 ```
 
+`~/.gdbinit`:
+
 ```gdb
-# .gdbinit
 set debuginfo enabled off
 ```
 
+`_vim_template.cpp`:
+
 ```cpp
-// _vim_template.cpp
 #include <bits/stdc++.h>
 #define ALL(a) (a).begin(), (a).end()
-#define FOR(i, a, b) for (int i = (a); i < (b); i++)
 #define PUSHB push_back
 using namespace std;
 using ll = long long;
-using ull = unsigned long long;
-using i128 = __int128_t;
 using pii = pair<int, int>;
-using pll = pair<ll, ll>;
-using pli = pair<ll, int>;
-
-void solve() {
-}
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
 #ifdef DEBUG
-  freopen("cache/main.in", "r", stdin);
-  freopen("cache/main.out", "w", stdout);
+  freopen("main.in", "r", stdin);
+  freopen("main.out", "w", stdout);
 #endif
-  int tt = 1;
-  cin >> tt;
-  while (tt--) {
-    solve();
-  }
   return 0;
 }
 ```
 
-```bash
-#!/usr/bin/env bash
-# _vim_run
-set -e
-ulimit -s 1048576
-g++-14 -DDEBUG -std=c++17 -g "$1.cpp" -o "./cache/$1" \
-  -fsanitize=address,undefined -Wall -Wpedantic -Wextra
-"./cache/$1" && cat ./cache/main.out
-```
+`_check`:
 
 ```bash
-#!/usr/bin/env bash
-# _check
-g++ _generator.cpp -O2 -std=c++17 -o ./cache/_generator
-g++ main.cpp -O2 -std=c++17 -o ./cache/main
-g++ std.cpp -O2 -std=c++17 -o ./cache/std
+#!/bin/bash
+g++ _generator.cpp -O2 -std=c++17 -o _generator
+g++ main.cpp -O2 -std=c++17 -o main
+g++ std.cpp -O2 -std=c++17 -o std
 cnt=0
 while true; do
-  ./cache/_generator >./cache/main.in
-  ./cache/main <./cache/main.in >./cache/main.out
-  ./cache/std <./cache/main.in >./cache/std.out
-  # diff <(head -n 1 ./cache/main.out) <(head -n 1 ./cache/std.out)
-  diff ./cache/main.out ./cache/std.out
+  ./_generator >main.in
+  ./main <main.in >main.out
+  ./std <main.in >std.out
+  # diff <(head -n 1 main.out) <(head -n 1 std.out)
+  diff main.out std.out
   if [ $? -ne 0 ]; then break; fi
   cnt=$((cnt + 1))
   if [ $((cnt % 100)) -eq 0 ]; then
@@ -468,17 +458,18 @@ while true; do
 done
 ```
 
+`_check_spj`:
+
 ```bash
-#!/usr/bin/env bash
-# _check_spj
-g++ _generator.cpp -DSPJ -O2 -std=c++17 -o ./cache/_generator
-g++ main.cpp -DSPJ -O2 -std=c++17 -o ./cache/main
-g++ _spj.cpp -DSPJ -O2 -std=c++17 -o ./cache/_spj
+#!/bin/bash
+g++ _generator.cpp -DSPJ -O2 -std=c++17 -o _generator
+g++ main.cpp -DSPJ -O2 -std=c++17 -o main
+g++ _spj.cpp -DSPJ -O2 -std=c++17 -o _spj
 cnt=0
 while true; do
-  ./cache/_generator >./cache/main.in
-  ./cache/main <./cache/main.in >./cache/main.out
-  ./cache/_spj <./cache/main.out || {
+  ./_generator >main.in
+  ./main <main.in >main.out
+  ./_spj <main.out || {
     echo "spj failed"
     break
   }
