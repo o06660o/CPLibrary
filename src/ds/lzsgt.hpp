@@ -45,7 +45,7 @@ struct Info {
 };
 struct Tag {
   ll add = 0;
-  Tag operator+=(const Tag& rhs) {
+  Tag& operator+=(const Tag& rhs) {
     add += rhs.add;
     return *this;
   }
