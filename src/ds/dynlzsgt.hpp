@@ -1,4 +1,4 @@
-template <typename Info, typename Tag, void (*fn)(Info&, const Tag&)>
+template <typename Info, typename Tag, void (*fn)(Info&, const Tag&, int)>
 struct SegTree {
   struct Node {
     Info info = {};
@@ -16,9 +16,13 @@ struct SegTree {
 
  private:
   int alloc(Node node) { return tree.PUSHB(move(node)), int(tree.size()) - 1; }
-  void update(int p, const Tag& f) { fn(tree[p].info, f), tree[p].tag += f; }
-  void pushdown(int p) {
-    update(tree[p].ls, tree[p].tag), update(tree[p].rs, tree[p].tag);
+  void update(int p, const Tag& f, int len) {
+    fn(tree[p].info, f, len), tree[p].tag += f;
+  }
+  void pushdown(int p, int pl, int pr) {
+    int mid = pl + (pr - pl) / 2, lenl = mid - pl, lenr = pr - mid;
+    update(tree[p].ls, tree[p].tag, lenl);
+    update(tree[p].rs, tree[p].tag, lenr);
     tree[p].tag = {};
   }
   void set(int p, int pl, int pr) {
@@ -26,16 +30,16 @@ struct SegTree {
     int ls = tree[p].ls, rs = tree[p].rs, mid = pl + (pr - pl) / 2;
     if (ls == -1) ls = tree[p].ls = alloc({});
     if (rs == -1) rs = tree[p].rs = alloc({});
-    pushdown(p), _pos < mid ? set(ls, pl, mid) : set(rs, mid, pr);
+    pushdown(p, pl, pr), _pos < mid ? set(ls, pl, mid) : set(rs, mid, pr);
     tree[p].info = tree[ls].info + tree[rs].info;
   }
   void apply(int p, int pl, int pr) {
     if (_r <= pl || pr <= _l || p == -1) return;
-    if (_l <= pl && pr <= _r) return update(p, _f);
+    if (_l <= pl && pr <= _r) return update(p, _f, pr - pl);
     int ls = tree[p].ls, rs = tree[p].rs, mid = pl + (pr - pl) / 2;
     if (ls == -1) ls = tree[p].ls = alloc({});
     if (rs == -1) rs = tree[p].rs = alloc({});
-    pushdown(p), apply(ls, pl, mid), apply(rs, mid, pr);
+    pushdown(p, pl, pr), apply(ls, pl, mid), apply(rs, mid, pr);
     tree[p].info = tree[ls].info + tree[rs].info;
   }
   Info sum(int p, int pl, int pr) {
@@ -44,21 +48,24 @@ struct SegTree {
     int ls = tree[p].ls, rs = tree[p].rs, mid = pl + (pr - pl) / 2;
     if (ls == -1) ls = tree[p].ls = alloc({});
     if (rs == -1) rs = tree[p].rs = alloc({});
-    return pushdown(p), sum(ls, pl, mid) + sum(rs, mid, pr);
+    return pushdown(p, pl, pr), sum(ls, pl, mid) + sum(rs, mid, pr);
   }
 };
 struct Info {
   ll sum = 0;
-  int len = 0;
   friend Info operator+(const Info& lhs, const Info& rhs) {
-    return {lhs.sum + rhs.sum, lhs.len + rhs.len};
+    return {lhs.sum + rhs.sum};
   }
 };
 struct Tag {
-  ll add = 0;
+  bool set = 0;
   Tag& operator+=(const Tag& rhs) {
-    add += rhs.add;
+    set |= rhs.set;
     return *this;
   }
 };
-void fn(Info& x, const Tag& f) { x.sum += x.len * f.add; }
+void fn(Info& x, const Tag& f, int len) {
+  if (f.set) {
+    x.sum = len;
+  }
+}

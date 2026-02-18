@@ -11,9 +11,8 @@ using ull = unsigned long long;
 
 struct Info_ {
   mint sum = 0;
-  int len = 0;
   friend Info_ operator+(const Info_& lhs, const Info_& rhs) {
-    return {lhs.sum + rhs.sum, lhs.len + rhs.len};
+    return {lhs.sum + rhs.sum};
   }
 };
 struct Tag_ {
@@ -24,7 +23,7 @@ struct Tag_ {
     return *this;
   }
 };
-void fn_(Info_& x, const Tag_& f) { x.sum = x.sum * f.b + f.c * x.len; }
+void fn_(Info_& x, const Tag_& f, int len) { x.sum = x.sum * f.b + f.c * len; }
 
 int main() {
   cin.tie(nullptr)->sync_with_stdio(false);
@@ -32,7 +31,7 @@ int main() {
   SegTree<Info_, Tag_, fn_> sgt(n);
   for (int i = 0; i < n; i++) {
     int x = read();
-    sgt.set(i, {x, 1});
+    sgt.set(i, {x});
   }
   while (q--) {
     int op = read(), l = read(), r = read();
