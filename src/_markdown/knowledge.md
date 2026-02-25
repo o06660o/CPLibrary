@@ -359,6 +359,43 @@ int main() {
 }
 ```
 
+### 三分
+
+二分的变式, 用来求出上凸函数 `fn` 的最大值点. 时间复杂度 $\mathcal{O}(\log(r - l))$.
+
+```cpp
+void ternary_search1() {
+  function<ll(int)> fn;
+
+  int l = 0, r = INF;
+  while (r - l >= 3) {
+    int mid = l + (r - l) / 2;
+    if (fn(mid - 1) < fn(mid + 1)) {
+      l = mid;
+    } else {
+      r = mid + 1;
+    }
+  }
+  ll ans = 0;
+  for (int k = l; k < r; k++) ans = max(ans, fn(k));
+}
+
+void ternary_search2() {
+  function<double(double)> fn;
+
+  double l = 0, r = INF;
+  while (r - l > EPS) {
+    double mid = l + (r - l) / 2;
+    if (fn(mid - EPS) < fn(mid + EPS)) {
+      r = mid;
+    } else {
+      l = mid;
+    }
+  }
+  cout << fixed << setprecision(7) << fn(l) << "\n";
+}
+```
+
 ### 主定理
 
 如果有递推关系式
